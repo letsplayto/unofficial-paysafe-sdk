@@ -1,5 +1,7 @@
 ## 💳 unofficial-paysafe-sdk
 
+[![Tests](https://github.com/letsplayto/unofficial-paysafe-sdk/actions/workflows/tests.yml/badge.svg)](https://github.com/letsplayto/unofficial-paysafe-sdk/actions/workflows/tests.yml)
+
 This is the **first unofficial Python SDK** for the [Paysafe REST API](https://developer.paysafe.com/). It provides a clean, Pythonic interface to authorize, capture, and refund card payments — with full support for **sync**, **async**, and **command-line** usage.
 
 Built to help developers integrate Paysafe into:
@@ -16,8 +18,60 @@ Built to help developers integrate Paysafe into:
 - 💳 Full card flow: authorize, capture, and refund
 - ⏱️ Async client (for game engines, bots, async web apps)
 - 💻 CLI tool for quick testing and automation
-- 🧪 Lightweight, readable codebase with test scaffold
+- 🧪 Comprehensive unit tests + GitHub Actions CI
 - ✅ MIT Licensed and easy to extend
+
+---
+
+### 📦 Installation
+
+```bash
+pip install -e .
+# or with dev dependencies
+pip install -e ".[dev]"
+```
+
+### Quick Start (Sync)
+
+```python
+from paysafe import PaysafeClient
+
+client = PaysafeClient("your_api_key", "your_api_secret", environment="TEST")
+
+payload = {
+    "merchantAccountId": "your_merchant_id",
+    "amount": 1000,  # in cents
+    "card": {
+        "cardNum": "4111111111111111",
+        "cvv": "123",
+        "expiryMonth": 12,
+        "expiryYear": 2027
+    },
+    "billingDetails": {
+        "street": "123 Main St",
+        "city": "City",
+        "country": "US"
+    }
+}
+
+response = client.payments.authorize_card(payload)
+print(response)
+```
+
+### Async Usage
+
+```python
+from paysafe import AsyncPaysafeClient
+
+async with AsyncPaysafeClient("your_api_key", "your_api_secret") as client:
+    response = await client.authorize_card(payload)
+```
+
+### CLI
+
+```bash
+paysafe --key YOUR_KEY --secret YOUR_SECRET --merchant YOUR_MERCHANT_ID --amount 1000
+```
 
 ---
 
